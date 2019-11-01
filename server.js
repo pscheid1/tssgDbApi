@@ -16,7 +16,7 @@ global.PackageName = Folders[Folders.length - 1];
 
 // default port setting
 let port = process.env.tssgApiPort || 7010;
-let host = process.env.tssgApiURL.trim() || 'localhost';
+let host = process.env.tssgApiURL || 'localhost';
 // express wants only the host, not protocol:host
 let pos = host.indexOf('://');
 if (pos !== -1) {
@@ -37,8 +37,12 @@ var index,
 for (index in argvs) {
   if (argvs.hasOwnProperty(index)) {
     value = argvs[index];
-    if (index === "p" || index === "port")
+    if (index === "p" || index === "port") {
       port = value;
+    }
+    if (index === "h" || index === "host") {
+      host = value;
+    }
   }
 }
 

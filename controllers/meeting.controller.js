@@ -107,7 +107,7 @@ module.exports = {
   // the their respective collection
   webSchedule: async function (req, res, next) {
     if (req.params.team === 'default') {
-      req.params.team = process.env.tssgApiDefaultTeam;
+      req.params.team = process.env.tssgApiDefaultTeam || 'WedGenMtg';
     }
     // console.log('meeting.controller.webSchedule: team = ' + req.params.team);
     await Meeting.find({ team: req.params.team, endTime: { $gt: new Date() } })
