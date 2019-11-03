@@ -1,22 +1,37 @@
 const Meeting = require("../models/meeting.model");
 
 function updateDate(newDate, newTime) {
-  // console.log('meeting.controller.updateDate - date: ' + newDate);
-  // console.log('meeting.controller.updateDate - time: ' + newTime);
+  // console.log('meeting.controller.updateDate - newDate: ' + newDate);
+  // console.log('meeting.controller.updateDate - newTime: ' + newTime);
   let newDateTime = new Date(newDate);
+  // console.log('meeting.controller.updateDate - newDateTime: ' + newDateTime);
   let nt = new Date(newTime);
+  // console.log('meeting.controller.updateDate - nt: ' + nt);
   newDateTime.setHours(nt.getHours());
+  // console.log('meeting.controller.updateDate - nt.hours: ' + nt.getHours());
   newDateTime.setMinutes(nt.getMinutes());
+  // console.log('meeting.controller.updateDate - nt.minutes: ' + nt.getMinutes());
+  newDateTime.setSeconds(0);
+  newDateTime.setMilliseconds(0);
+  // console.log('meeting.controller.updateDate - newDateTime: ' + newDateTime);
   return newDateTime;
 }
 
 module.exports = {
 
   create: async function (req, res, next) {
+    req.body.meetingDate.setSeconds(0);
+    req.body.meetingDate.setMilliseconds(0);
     // update date component of startTime (timepicker will create it with today's date)
+    // console.log('meeting.controller.create - startTime: ' + req.body.startTime);
     req.body.startTime = updateDate(req.body.meetingDate, req.body.startTime);
+    // console.log('meeting.controller.create - startTime: ' + req.body.startTime);
     // update date component of endTime (timepicker will create it with today's date)
+    // console.log('meeting.controller.create - endTime: ' + req.body.endTime);
     req.body.endTime = updateDate(req.body.meetingDate, req.body.endTime);
+    // console.log('meeting.controller.create - endTime: ' + req.body.endTime);
+    // console.log('meeting.controller.create - JSON.stringify(endTime): ' + JSON.stringify(req.body.endTime));
+    // console.log('meeting.controller.create: ' + JSON.stringify(req.body));
     await Meeting.create(req.body)
       .then(newMeeting => res.json(newMeeting))
       .catch(err => {
@@ -29,9 +44,12 @@ module.exports = {
     // if startTime and/or endTime were changed, the timepicker will create the new
     // time with today's date
     // ensure startTime date component agrees with meetingDate
+    req.body.meetingDate.setSeconds(0);
+    req.body.meetingDate.setMilliseconds(0);
     req.body.startTime = updateDate(req.body.meetingDate, req.body.startTime);
     // ensure endTime date component agrees with meetingDate
     req.body.endTime = updateDate(req.body.meetingDate, req.body.endTime);
+    // console.log('meeting.controller.update: ' + JSON.stringify(req.body));
     await Meeting.findByIdAndUpdate(req.body._id, req.body, { new: true })
       .then(meeting => {
         // a bad or nonexistent key is not considered an error?
