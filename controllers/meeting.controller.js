@@ -7,12 +7,16 @@ function updateDate(newDate, newTime) {
   let nt = new Date(newTime);
   newDateTime.setHours(nt.getHours());
   newDateTime.setMinutes(nt.getMinutes());
+  newDateTime.setSeconds(0);
+  newDateTime.setMilliseconds(0);
   return newDateTime;
 }
 
 module.exports = {
 
   create: async function (req, res, next) {
+    req.body.meetingDate.setSeconds(0);
+    req.body.meetingDate.setMilliseconds(0);
     // update date component of startTime (timepicker will create it with today's date)
     req.body.startTime = updateDate(req.body.meetingDate, req.body.startTime);
     // update date component of endTime (timepicker will create it with today's date)
@@ -29,6 +33,8 @@ module.exports = {
     // if startTime and/or endTime were changed, the timepicker will create the new
     // time with today's date
     // ensure startTime date component agrees with meetingDate
+    req.body.meetingDate.setSeconds(0);
+    req.body.meetingDate.setMilliseconds(0);
     req.body.startTime = updateDate(req.body.meetingDate, req.body.startTime);
     // ensure endTime date component agrees with meetingDate
     req.body.endTime = updateDate(req.body.meetingDate, req.body.endTime);
