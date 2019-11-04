@@ -15,8 +15,9 @@ function updateDate(newDate, newTime) {
 module.exports = {
 
   create: async function (req, res, next) {
-    req.body.meetingDate.setSeconds(0);
-    req.body.meetingDate.setMilliseconds(0);
+    // force hours and minutes to 0.  Date is replaced with req.body.meetingDate
+    req.body.meetingDate = updateDate(req.body.meetingDate, '2019-11-11T00:00:00.000Z')
+    // console.log(req.body.meetingDate);
     // update date component of startTime (timepicker will create it with today's date)
     req.body.startTime = updateDate(req.body.meetingDate, req.body.startTime);
     // update date component of endTime (timepicker will create it with today's date)
@@ -29,12 +30,13 @@ module.exports = {
   },
 
   update: async function (req, res, next) {
+    // force hours and minutes to 0.  Date is replaced with req.body.meetingDate
+    req.body.meetingDate = updateDate(req.body.meetingDate, '2019-11-11T00:00:00.000Z')
+    console.log(req.body.meetingDate);
     // if meetingDate was changed, we need to update startTime and endTime
     // if startTime and/or endTime were changed, the timepicker will create the new
     // time with today's date
     // ensure startTime date component agrees with meetingDate
-    req.body.meetingDate.setSeconds(0);
-    req.body.meetingDate.setMilliseconds(0);
     req.body.startTime = updateDate(req.body.meetingDate, req.body.startTime);
     // ensure endTime date component agrees with meetingDate
     req.body.endTime = updateDate(req.body.meetingDate, req.body.endTime);
@@ -75,7 +77,7 @@ module.exports = {
         }
       })
       .catch(err => {
-        res.status(404).json({ name: 'Error', message:  err.message });
+        res.status(404).json({ name: 'Error', message: err.message });
       });
   },
 
