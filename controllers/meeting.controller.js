@@ -47,10 +47,9 @@ module.exports = {
     // if startTime and/or endTime were changed, the timepicker will create the new
     // time with today's date
     // ensure startTime date component agrees with meetingDate
-    req.body.meetingDate.setSeconds(0);
-    req.body.meetingDate.setMilliseconds(0);
     req.body.startTime = updateDate(req.body.meetingDate, req.body.startTime);
     if (md) console.log('meeting.controller.update startTime: ' + req.body.startTime);
+    // ensure endTime date component agrees with meetingDate
     req.body.endTime = updateDate(req.body.meetingDate, req.body.endTime);
     if (md) console.log('meeting.controller.update endTime: ' + req.body.endTime);
     if (md) console.log('meeting.controller.update: ' + JSON.stringify(req.body));
