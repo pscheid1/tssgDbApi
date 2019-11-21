@@ -159,7 +159,9 @@ module.exports = {
       " - packageName: " +
       global.PackageName +
       " - __dirname: " +
-      __dirname
+      __dirname +
+      " - tssgApiMtgDebug: " +
+      global.md
     );
   }
 };
