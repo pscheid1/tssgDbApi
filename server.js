@@ -14,7 +14,7 @@ global.Root = __dirname;
 global.Folders = Root.split(path.sep);
 global.PackageName = Folders[Folders.length - 1];
 
-global.md = (process.env.tssgApiMtgDebuggDebug === 'true') ? Boolean(true)  : Boolean(null);
+global.md = (process.env.tssgApiMtgDebug === 'true') ? Boolean(true)  : Boolean(null);
 
 // default port setting
 let port = process.env.tssgApiPort || 7010;
